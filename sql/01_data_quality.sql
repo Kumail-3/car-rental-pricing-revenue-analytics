@@ -1,21 +1,69 @@
 -- ============================================================
 -- Car Rental Pricing & Revenue Analytics
--- Data Quality Checks
+-- 01 - Data Quality Checks
+-- ============================================================
+--
+-- Purpose:
+-- Validate the booking, fleet, branch and pricing data before
+-- using the dataset for commercial pricing and revenue analysis.
+--
+-- Methodology:
+-- 1. Count booking records.
+-- 2. Identify duplicate booking IDs.
+-- 3. Validate revenue = daily rate × rental days.
+-- 4. Validate pickup and return dates.
+-- 5. Validate rental_days against date differences.
+-- 6. Validate booking-to-vehicle relationships.
+-- 7. Validate booking-to-branch relationships.
+-- 8. Validate pricing boundaries.
+--
+-- A query returning no records generally indicates that no
+-- exceptions were identified for that specific validation test.
 -- ============================================================
 
--- 1. Check total number of bookings
-SELECT COUNT(*) AS total_bookings
+
+-- ------------------------------------------------------------
+-- 1. Total booking count
+-- ------------------------------------------------------------
+-- Method:
+-- COUNT(*) returns the number of booking records in the table.
+-- ------------------------------------------------------------
+
+SELECT
+    COUNT(*) AS total_bookings
 FROM bookings;
 
 
--- 2. Check for duplicate booking IDs
-SELECT booking_id, COUNT(*) AS duplicate_count
+-- ------------------------------------------------------------
+-- 2. Duplicate booking IDs
+-- ------------------------------------------------------------
+-- Method:
+-- Group records by booking_id and identify IDs appearing
+-- more than once.
+--
+-- Expected result:
+-- No rows should be returned if booking IDs are unique.
+-- ------------------------------------------------------------
+
+SELECT
+    booking_id,
+    COUNT(*) AS duplicate_count
 FROM bookings
 GROUP BY booking_id
 HAVING COUNT(*) > 1;
 
 
--- 3. Check that total revenue equals daily rate × rental days
+-- ------------------------------------------------------------
+-- 3. Revenue calculation validation
+-- ------------------------------------------------------------
+-- Expected revenue:
+--
+-- Total Revenue = Daily Rate × Rental Days
+--
+-- The query identifies records where the stored total_revenue
+-- does not equal the expected calculation.
+-- ------------------------------------------------------------
+
 SELECT
     booking_id,
     daily_rate,
@@ -25,7 +73,18 @@ FROM bookings
 WHERE total_revenue != daily_rate * rental_days;
 
 
--- 4. Check for invalid rental dates
+-- ------------------------------------------------------------
+-- 4. Rental date validation
+-- ------------------------------------------------------------
+-- Method:
+-- A valid rental should have:
+--
+-- Return Date > Pickup Date
+--
+-- Records where the return date is equal to or earlier than
+-- the pickup date are flagged.
+-- ------------------------------------------------------------
+
 SELECT
     booking_id,
     pickup_date,
@@ -35,7 +94,22 @@ FROM bookings
 WHERE return_date <= pickup_date;
 
 
--- 5. Check that rental days match the pickup and return dates
+-- ------------------------------------------------------------
+-- 5. Rental duration validation
+-- ------------------------------------------------------------
+-- Method:
+-- Calculate the expected rental duration using the difference
+-- between return_date and pickup_date.
+--
+-- Expected:
+--
+-- Rental Days =
+-- julianday(return_date) - julianday(pickup_date)
+--
+-- The result is cast to INTEGER because rental_days is stored
+-- as a whole number.
+-- ------------------------------------------------------------
+
 SELECT
     booking_id,
     pickup_date,
@@ -43,10 +117,25 @@ SELECT
     rental_days
 FROM bookings
 WHERE rental_days !=
-      CAST(julianday(return_date) - julianday(pickup_date) AS INTEGER);
+      CAST(
+          julianday(return_date) - julianday(pickup_date)
+          AS INTEGER
+      );
 
 
--- 6. Check for bookings referencing vehicles that do not exist
+-- ------------------------------------------------------------
+-- 6. Vehicle referential integrity
+-- ------------------------------------------------------------
+-- Method:
+-- LEFT JOIN bookings to fleet using vehicle_id.
+--
+-- Any booking without a matching vehicle in the fleet table
+-- indicates a broken vehicle reference.
+--
+-- Expected result:
+-- No rows should be returned.
+-- ------------------------------------------------------------
+
 SELECT
     b.booking_id,
     b.vehicle_id
@@ -56,7 +145,19 @@ LEFT JOIN fleet f
 WHERE f.vehicle_id IS NULL;
 
 
--- 7. Check for bookings referencing branches that do not exist
+-- ------------------------------------------------------------
+-- 7. Branch referential integrity
+-- ------------------------------------------------------------
+-- Method:
+-- LEFT JOIN bookings to branches using branch_id.
+--
+-- Any booking without a matching branch indicates a broken
+-- branch reference.
+--
+-- Expected result:
+-- No rows should be returned.
+-- ------------------------------------------------------------
+
 SELECT
     b.booking_id,
     b.branch_id
@@ -66,8 +167,20 @@ LEFT JOIN branches br
 WHERE br.branch_id IS NULL;
 
 
--- 8. Check pricing boundaries
--- Minimum rate should be <= base rate <= maximum rate
+-- ------------------------------------------------------------
+-- 8. Pricing boundary validation
+-- ------------------------------------------------------------
+-- Expected pricing relationship:
+--
+-- Minimum Daily Rate
+--        ≤
+-- Base Daily Rate
+--        ≤
+-- Maximum Daily Rate
+--
+-- Records violating either boundary are flagged.
+-- ------------------------------------------------------------
+
 SELECT
     pricing_id,
     vehicle_category,
