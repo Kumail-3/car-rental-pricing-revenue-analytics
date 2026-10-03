@@ -1,0 +1,41 @@
+vehicle_id,branch_id,vehicle_category,vehicle_make,vehicle_model,vehicle_year,transmission,fuel_type
+1001,1,EDAV,Toyota,Corolla,2023,Automatic,Petrol
+1002,1,EDAV,Hyundai,i30,2023,Automatic,Petrol
+1003,1,CDAV,Toyota,Corolla Sedan,2022,Automatic,Petrol
+1004,1,ICAV,Kia,Sportage,2023,Automatic,Petrol
+1005,1,IFAV,Toyota,RAV4,2024,Automatic,Hybrid
+1006,1,FFBV,Toyota,Kluger,2023,Automatic,Petrol
+1007,2,EDAV,Hyundai,i30,2023,Automatic,Petrol
+1008,2,CDAV,Toyota,Corolla Sedan,2022,Automatic,Petrol
+1009,2,ICAV,Kia,Sportage,2023,Automatic,Petrol
+1010,2,PVAV,Kia,Carnival,2023,Automatic,Petrol
+1011,3,EDAV,Toyota,Corolla,2023,Automatic,Petrol
+1012,3,CDAV,Hyundai,Elantra,2023,Automatic,Petrol
+1013,3,ICAV,Kia,Sportage,2023,Automatic,Petrol
+1014,3,IFAV,Toyota,RAV4,2024,Automatic,Hybrid
+1015,3,FFBR,Toyota,Kluger,2023,Automatic,Petrol
+1016,4,EDAV,Hyundai,i30,2022,Automatic,Petrol
+1017,4,CDAV,Toyota,Corolla Sedan,2023,Automatic,Petrol
+1018,4,ICAV,Kia,Sportage,2023,Automatic,Petrol
+1019,5,EDAV,Toyota,Corolla,2023,Automatic,Petrol
+1020,5,CDAV,Hyundai,Elantra,2023,Automatic,Petrol
+1021,5,ICAH,Kia,Niro,2024,Automatic,Hybrid
+1022,5,IFAH,Toyota,RAV4,2024,Automatic,Hybrid
+1023,6,EDAV,Toyota,Corolla,2023,Automatic,Petrol
+1024,6,CDAV,Hyundai,i30,2023,Automatic,Petrol
+1025,6,ICAV,Kia,Sportage,2023,Automatic,Petrol
+1026,6,IFAV,Toyota,RAV4,2024,Automatic,Hybrid
+1027,7,EDAV,Hyundai,i30,2023,Automatic,Petrol
+1028,7,CDAV,Toyota,Corolla Sedan,2022,Automatic,Petrol
+1029,7,ICAV,Kia,Sportage,2023,Automatic,Petrol
+1030,8,EDAV,Toyota,Corolla,2023,Automatic,Petrol
+1031,8,CDAV,Hyundai,i30,2023,Automatic,Petrol
+1032,8,ICAV,Kia,Sportage,2023,Automatic,Petrol
+1033,8,IFAV,Toyota,RAV4,2024,Automatic,Hybrid
+1034,8,FFBV,Toyota,Kluger,2023,Automatic,Petrol
+1035,9,EDAV,Hyundai,i30,2023,Automatic,Petrol
+1036,9,CDAV,Toyota,Corolla Sedan,2023,Automatic,Petrol
+1037,9,ICAV,Kia,Sportage,2023,Automatic,Petrol
+1038,9,IFAH,Toyota,RAV4,2024,Automatic,Hybrid
+1039,10,EDAV,Toyota,Corolla,2023,Automatic,Petrol
+1040,10,CDAV,Hyundai,Elantra,2023,Automatic,Petrol
