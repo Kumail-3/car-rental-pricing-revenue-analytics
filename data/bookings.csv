@@ -1,6 +1,0 @@
-booking_id,branch,vehicle_category,booking_date,pickup_date,days_to_book,rental_days,channel,daily_rate,revenue,status
-B00001,Southport,Economy,2026-01-05,2026-01-12,7,4,Direct,45,180,Completed
-B00002,Gold Coast,Compact,2026-01-06,2026-01-09,3,3,OTA,52,156,Completed
-B00003,Brisbane,SUV,2026-01-08,2026-01-20,12,7,Direct,78,546,Completed
-B00004,Launceston,Economy,2026-01-10,2026-01-13,3,2,Travel Agent,48,96,Completed
-B00005,Hobart,SUV,2026-01-11,2026-01-18,7,5,OTA,82,410,Completed
