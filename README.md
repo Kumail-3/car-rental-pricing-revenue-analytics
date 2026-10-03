@@ -1,291 +1,429 @@
 # Car Rental Pricing & Revenue Analytics
 
-**SQL • SQLite • Pricing Analytics • Revenue Management • Fleet Performance • Commercial Insights**
+A synthetic pricing, revenue and fleet analytics project designed to demonstrate SQL, commercial analysis and pricing decision-making in the car rental industry.
 
-A portfolio project demonstrating how SQL and structured data analysis can be used to investigate **car-rental pricing, revenue, rental duration, vehicle performance, branch yield, and fleet utilisation**.
-
-The project uses a synthetic car-rental dataset designed around realistic rental operations and commercial pricing questions.
+The project uses a SQLite database containing booking, branch, fleet and pricing data. SQL is used to transform the raw data into commercially relevant metrics covering revenue, pricing, rental duration, fleet activity, vehicle performance and branch-level yield.
 
 ---
 
 ## Project Objective
 
-The objective of this project is to analyse rental transactions and answer practical pricing and revenue questions such as:
+The objective of this project is to answer practical commercial questions that a Pricing Analyst or Revenue Analyst may encounter in a car rental business:
 
-* How much revenue is being generated?
-* Which branches generate the most revenue?
-* Which vehicle categories generate the most revenue?
-* How does realised daily revenue vary by branch?
-* How does rental duration relate to revenue?
-* How does pricing differ between airport and city locations?
-* How does pricing vary between vehicle categories?
-* Which vehicle categories contribute most to total revenue?
-* How efficiently is the fleet being utilised?
-* Are the underlying data and revenue calculations reliable?
+- Which branches generate the most revenue?
+- Which vehicle categories contribute the most revenue?
+- What is the realised revenue per rental day?
+- How does pricing vary between branches and vehicle categories?
+- How does rental duration affect realised revenue?
+- How does rental activity differ across vehicle categories?
+- Which branches generate stronger revenue relative to their fleet size?
+- Which individual vehicles generate the most revenue?
+- How does pricing change over time?
+- What percentage of total revenue comes from each vehicle category?
+- Are the underlying booking and pricing data reliable?
 
-The project follows a commercial analytics workflow:
+The project follows the workflow:
 
-**Raw Data → SQLite Database → SQL Analysis → KPIs → Commercial Insights → Visualisation**
-
----
-
-# Executive Summary
-
-The current synthetic dataset contains:
-
-| KPI                            |      Result |
-| ------------------------------ | ----------: |
-| Total bookings                 |      **40** |
-| Total rental days              |     **136** |
-| Total revenue                  | **$10,013** |
-| Average revenue per booking    | **$250.33** |
-| Average revenue per rental day |  **$73.63** |
-| Branches                       |      **10** |
-| Vehicle categories             |       **9** |
-
-### Selected Findings
-
-**Branch performance**
-
-Brisbane Airport generated **$1,516** in revenue across 5 bookings and 17 rental days.
-
-Gold Coast Airport generated **$1,508** across 6 bookings and 20 rental days.
-
-Launceston Airport generated **$1,497** across 5 bookings and 19 rental days.
-
-**Vehicle category performance**
-
-ICAV generated **$2,157** in revenue across 8 bookings and 30 rental days.
-
-CDAV generated **$1,707**, while EDAV generated **$1,460**.
-
-**Revenue yield**
-
-Revenue per rental day varies across branches. For example:
-
-* Brisbane Airport: **$89.18 per rental day**
-* Southport: **$81.07 per rental day**
-* Devonport: **$48.00 per rental day**
-
-This demonstrates why pricing analysis should consider both **revenue volume and revenue yield**.
+**Raw Data → SQLite Database → SQL Analysis → Commercial Metrics → Visualisation → Business Insights**
 
 ---
 
-# Key Visualisations
+# Project Overview
+
+The dataset contains:
+
+- **40 completed bookings**
+- **136 total rental days**
+- **$10,013 total revenue**
+- **10 rental branches**
+- **9 vehicle categories**
+- Fleet-level vehicle information
+- Branch-level location information
+- Pricing boundaries for vehicle categories
+
+The data is synthetic and is intended for portfolio and analytical demonstration purposes.
+
+---
+
+# Key KPIs
+
+| KPI | Result |
+|---|---:|
+| Total bookings | 40 |
+| Total rental days | 136 |
+| Total revenue | $10,013 |
+| Average revenue per booking | $250.33 |
+| Average revenue per rental day | $73.63 |
+| Branches | 10 |
+| Vehicle categories | 9 |
+
+### KPI Calculation Methods
+
+**Average Revenue per Booking**
+
+`Total Revenue ÷ Total Completed Bookings`
+
+**Revenue per Rental Day**
+
+`Total Revenue ÷ Total Rental Days`
+
+These metrics provide the baseline for comparing revenue performance across branches, vehicle categories and rental durations.
+
+---
+
+# Revenue Analysis
+
+## Calculation Method
+
+The primary revenue analysis uses **completed bookings only**.
+
+### Total Revenue
+
+`SUM(total_revenue)`
+
+### Total Rental Days
+
+`SUM(rental_days)`
+
+### Revenue per Rental Day
+
+`SUM(total_revenue) ÷ SUM(rental_days)`
 
 ### Revenue by Branch
 
-![Revenue by Branch](charts/branch_revenue.png)
+Completed booking revenue is grouped by `branch_id` and joined to the branch table to provide branch name, city and state.
 
 ### Revenue by Vehicle Category
 
-![Revenue by Vehicle Category](charts/category_revenue.png)
+Completed bookings are grouped by `vehicle_category` to compare booking volume, rental days, average daily rate and total revenue.
 
-### Revenue per Rental Day
+### Revenue by Location Type
 
-![Revenue per Rental Day](charts/revenue_per_rental_day.png)
-
-### Revenue by Rental Duration
-
-![Revenue by Rental Duration](charts/rental_duration_revenue.png)
+Branches are grouped into location types such as **Airport** and **City** to compare their commercial performance.
 
 ---
 
-# Pricing Analytics
+## Revenue by Branch
 
-The project focuses on several commercial pricing and revenue metrics.
+| Branch | Bookings | Rental Days | Revenue |
+|---|---:|---:|---:|
+| Brisbane Airport | 5 | 17 | $1,516 |
+| Gold Coast Airport | 6 | 20 | $1,508 |
+| Launceston Airport | 5 | 19 | $1,497 |
+| Southport | 4 | 14 | $1,135 |
+| Sunshine Coast Airport | 4 | 14 | $1,032 |
+| Hobart Airport | 4 | 14 | $994 |
+| Launceston City | 4 | 14 | $964 |
+| Hobart City | 3 | 10 | $590 |
+| Brisbane City | 3 | 8 | $489 |
+| Devonport | 2 | 6 | $288 |
+
+---
+
+## Revenue by Vehicle Category
+
+| Vehicle Category | Bookings | Rental Days | Revenue |
+|---|---:|---:|---:|
+| ICAV | 8 | 30 | $2,157 |
+| CDAV | 10 | 30 | $1,707 |
+| EDAV | 11 | 31 | $1,460 |
+| IFAV | 4 | 14 | $1,269 |
+| FFBV | 2 | 9 | $1,051 |
+| IFAH | 2 | 8 | $776 |
+| FFBR | 1 | 5 | $640 |
+| PVAV | 1 | 5 | $625 |
+| ICAH | 1 | 4 | $328 |
+
+---
+
+# Pricing Analysis
+
+## Calculation Method
+
+Pricing analysis uses completed bookings and compares realised pricing across multiple dimensions.
 
 ### Average Daily Rate
 
-**Average Daily Rate = Total Revenue ÷ Total Rental Days**
+For the overall dataset:
 
-Current dataset:
+`Total Revenue ÷ Total Rental Days`
 
-**$10,013 ÷ 136 = $73.63**
+At category, branch and other analysis levels, the SQL also calculates:
+
+`AVG(daily_rate)`
+
+This allows comparison between the recorded booking daily rate and the realised revenue generated from rental activity.
+
+### Pricing Dimensions
+
+Pricing is analysed across:
+
+- Branch
+- Vehicle category
+- Rental duration
+- Weekday vs weekend
+- Branch and vehicle category combinations
+- Monthly periods
+
+The purpose is to identify pricing differences and potential commercial opportunities.
+
+---
+
+# Revenue Yield
+
+## Calculation Method
 
 ### Revenue per Rental Day
 
-**Revenue per Rental Day = Branch Revenue ÷ Branch Rental Days**
+`Total Branch Revenue ÷ Total Branch Rental Days`
 
-This provides a simple yield measure that allows branches with different booking volumes to be compared.
+This measures the realised revenue generated for each rental day.
 
-### Revenue Contribution
+It is useful for comparing branches with different booking volumes because total revenue alone does not show how efficiently rental days are monetised.
 
-**Revenue Contribution % = Category Revenue ÷ Total Revenue × 100**
+## Revenue per Rental Day by Branch
 
-This measures the share of total revenue generated by each vehicle category.
-
-### Revenue per Booking
-
-**Revenue per Booking = Total Revenue ÷ Number of Bookings**
-
-Current dataset:
-
-**$10,013 ÷ 40 = $250.33**
-
----
-
-# Revenue by Branch
-
-| Branch                 | Bookings | Rental Days | Revenue |
-| ---------------------- | -------: | ----------: | ------: |
-| Brisbane Airport       |        5 |          17 |  $1,516 |
-| Gold Coast Airport     |        6 |          20 |  $1,508 |
-| Launceston Airport     |        5 |          19 |  $1,497 |
-| Southport              |        4 |          14 |  $1,135 |
-| Sunshine Coast Airport |        4 |          14 |  $1,032 |
-| Hobart Airport         |        4 |          14 |    $994 |
-| Launceston City        |        4 |          14 |    $964 |
-| Hobart City            |        3 |          10 |    $590 |
-| Brisbane City          |        3 |           8 |    $489 |
-| Devonport              |        2 |           6 |    $288 |
+| Branch | Revenue per Rental Day |
+|---|---:|
+| Brisbane Airport | $89.18 |
+| Southport | $81.07 |
+| Launceston Airport | $78.79 |
+| Gold Coast Airport | $75.40 |
+| Sunshine Coast Airport | $73.71 |
+| Hobart Airport | $71.00 |
+| Launceston City | $68.86 |
+| Brisbane City | $61.13 |
+| Hobart City | $59.00 |
+| Devonport | $48.00 |
 
 ---
 
-# Revenue by Vehicle Category
+# Rental Duration Analysis
 
-The project uses rental-industry vehicle category codes rather than generic labels.
+## Calculation Method
 
-| Vehicle Category | Bookings | Rental Days | Revenue |
-| ---------------- | -------: | ----------: | ------: |
-| ICAV             |        8 |          30 |  $2,157 |
-| CDAV             |       10 |          30 |  $1,707 |
-| EDAV             |       11 |          31 |  $1,460 |
-| IFAV             |        4 |          14 |  $1,269 |
-| FFBV             |        2 |           9 |  $1,051 |
-| IFAH             |        2 |           8 |    $776 |
-| FFBR             |        1 |           5 |    $640 |
-| PVAV             |        1 |           5 |    $625 |
-| ICAH             |        1 |           4 |    $328 |
+### Rental Duration
 
----
+`Return Date − Pickup Date`
 
-# Revenue Yield by Branch
+### Revenue per Rental Day
 
-| Branch                 | Revenue / Rental Day |
-| ---------------------- | -------------------: |
-| Brisbane Airport       |               $89.18 |
-| Southport              |               $81.07 |
-| Launceston Airport     |               $78.79 |
-| Gold Coast Airport     |               $75.40 |
-| Sunshine Coast Airport |               $73.71 |
-| Hobart Airport         |               $71.00 |
-| Launceston City        |               $68.86 |
-| Brisbane City          |               $61.13 |
-| Hobart City            |               $59.00 |
-| Devonport              |               $48.00 |
+`Total Revenue ÷ Total Rental Days`
 
-This illustrates the importance of analysing **yield as well as volume**.
+Bookings are grouped by `rental_days` to compare revenue performance across different rental lengths.
 
-A branch can generate significant total revenue because of booking volume, while another branch can generate a different revenue yield per rental day.
+### Commercial Application
+
+This analysis can support decisions around:
+
+- Length-of-rental pricing
+- Long-rental discounts
+- Minimum rental periods
+- Promotional pricing
+- Revenue optimisation by rental duration
 
 ---
 
-# Airport vs City Performance
+# Fleet Performance
 
-The dataset contains both airport and city locations.
+## Calculation Method
 
-| Location Type | Bookings | Rental Days | Average Daily Rate | Revenue |
-| ------------- | -------: | ----------: | -----------------: | ------: |
-| Airport       |       24 |          84 |             $74.21 |  $6,547 |
-| City          |       16 |          52 |             $63.06 |  $3,466 |
+Fleet performance compares branch-level rental activity against the number of vehicles assigned to each branch.
 
-Airport locations account for a larger share of bookings, rental days and revenue in this synthetic dataset.
+### Rental Days per Vehicle
 
-This provides a basis for investigating how **location type and customer demand relate to realised pricing**.
+`Total Rental Days ÷ Fleet Vehicles at Branch`
 
----
+### Revenue per Vehicle
 
-# Analysis Library
+`Total Branch Revenue ÷ Fleet Vehicles at Branch`
 
-The repository contains 15 SQL analyses covering different commercial questions.
+These metrics provide a simple productivity view of the fleet.
 
-| Analysis                               | Business Question                                          |
-| -------------------------------------- | ---------------------------------------------------------- |
-| **01 — Data Quality**                  | Is the underlying data reliable?                           |
-| **02 — Revenue Analysis**              | What is the overall revenue performance?                   |
-| **03 — Utilisation**                   | How are vehicle categories being utilised?                 |
-| **04 — Branch Pricing**                | How does pricing and revenue vary by branch?               |
-| **05 — Category Pricing**              | How does pricing vary by vehicle category?                 |
-| **06 — Rental Duration**               | How does rental length relate to realised revenue?         |
-| **07 — Weekday vs Weekend**            | How does realised pricing differ by day type?              |
-| **08 — Branch Category Pricing**       | How does pricing vary across branch/category combinations? |
-| **09 — Monthly Pricing Trend**         | How does pricing change over time?                         |
-| **10 — Fleet Performance**             | How does fleet size relate to rental activity?             |
-| **11 — Category Revenue Contribution** | Which categories contribute most to revenue?               |
-| **12 — Booking Status Overview**       | What is the booking-status and revenue profile?            |
-| **13 — Branch Revenue per Rental Day** | Which branches generate the highest revenue yield?         |
-| **14 — Vehicle Performance**           | How does performance vary at vehicle level?                |
-| **15 — Rental Duration Revenue**       | How does revenue vary by rental duration?                  |
+**Important:** Rental days per vehicle is a fleet productivity measure, not a formal utilisation percentage. A formal utilisation rate would require available fleet-days or calendar capacity.
 
 ---
 
-# Business Questions Demonstrated
+# Category Revenue Contribution
 
-This project demonstrates the ability to translate operational data into commercially relevant questions.
+## Calculation Method
 
-### Pricing
+### Revenue Contribution %
 
-* What is the realised daily rate?
-* Which branches have higher revenue yield?
-* How does pricing vary by vehicle category?
-* How does pricing vary by rental duration?
-* How does realised pricing differ between weekday and weekend rentals?
-* How does pricing vary between airport and city locations?
+`Category Revenue ÷ Total Revenue × 100`
 
-### Revenue
+### Average Revenue per Booking
 
-* Which branches generate the most revenue?
-* Which vehicle categories contribute the most revenue?
-* What is the average revenue per booking?
-* What is the revenue contribution of each category?
-* How does revenue vary across rental-duration groups?
+`Category Revenue ÷ Category Bookings`
 
-### Fleet
+This analysis identifies the contribution of each vehicle category to total revenue.
 
-* How many vehicles are represented in the fleet?
-* How many rental days are generated?
-* How does fleet activity vary between branches?
-* How does revenue relate to fleet utilisation?
+It can support:
 
-### Data Quality
-
-* Are revenue calculations internally consistent?
-* Are booking dates valid?
-* Are foreign-key relationships valid?
-* Are rental durations valid?
-* Are daily rates within expected pricing boundaries?
+- Fleet allocation decisions
+- Category pricing
+- Vehicle mix optimisation
+- Revenue forecasting
+- Promotional strategy
 
 ---
 
 # Data Quality
 
-Before analysing commercial performance, the project performs data-quality checks covering:
+Before analysing the commercial metrics, the dataset is checked for consistency and integrity.
 
-* Revenue calculation consistency
-* Foreign-key relationships
-* Date validity
-* Rental duration validity
-* Pricing boundaries
-* Vehicle-category pricing coverage
+## Calculation Methods
 
-The validation checks are designed to ensure that the underlying data can be used consistently for revenue and pricing analysis.
+### Revenue Consistency
+
+`Expected Revenue = Daily Rate × Rental Days`
+
+### Rental Date Validation
+
+`Return Date > Pickup Date`
+
+### Rental Duration Validation
+
+`Rental Days = Return Date − Pickup Date`
+
+### Vehicle Referential Integrity
+
+Bookings are checked against the fleet table using `vehicle_id`.
+
+### Branch Referential Integrity
+
+Bookings are checked against the branches table using `branch_id`.
+
+### Pricing Boundary Validation
+
+`Minimum Daily Rate ≤ Base Daily Rate ≤ Maximum Daily Rate`
+
+The completed data-quality checks found no mismatched revenue calculations, orphan vehicle or branch references, invalid rental dates, invalid rental durations or invalid pricing boundaries in the analysed dataset.
+
+---
+
+# SQL Analysis Library
+
+The project contains 15 SQL analyses covering different commercial questions.
+
+| SQL Analysis | Business Focus |
+|---|---|
+| `01_data_quality.sql` | Data validation and integrity checks |
+| `02_revenue_analysis.sql` | Overall revenue performance |
+| `03_utilisation.sql` | Rental activity by vehicle category |
+| `04_branch_pricing.sql` | Pricing and revenue by branch |
+| `05_category_pricing.sql` | Pricing by vehicle category |
+| `06_rental_duration.sql` | Pricing by rental duration |
+| `07_weekday_weekend_pricing.sql` | Weekday vs weekend pricing |
+| `08_branch_category_pricing.sql` | Branch/category pricing combinations |
+| `09_monthly_pricing_trend.sql` | Monthly pricing and revenue trends |
+| `10_fleet_performance.sql` | Fleet size and branch productivity |
+| `11_category_revenue_contribution.sql` | Revenue contribution by category |
+| `12_booking_status_overview.sql` | Booking status and revenue |
+| `13_branch_revenue_per_rental_day.sql` | Revenue yield by branch |
+| `14_vehicle_performance.sql` | Vehicle-level performance |
+| `15_rental_duration_revenue.sql` | Revenue by rental duration |
+
+---
+
+# Visualisations
+
+The project includes four visualisations generated from the analysis.
+
+## Branch Revenue
+
+![Branch Revenue](charts/branch_revenue.png)
+
+## Category Revenue
+
+![Category Revenue](charts/category_revenue.png)
+
+## Revenue per Rental Day
+
+![Revenue per Rental Day](charts/revenue_per_rental_day.png)
+
+## Rental Duration Revenue
+
+![Rental Duration Revenue](charts/rental_duration_revenue.png)
+
+These visualisations provide a visual layer on top of the SQL analysis and make the commercial findings easier to communicate.
+
+---
+
+# Key Findings
+
+### Branch Revenue
+
+Branch revenue ranges from **$288 at Devonport** to **$1,516 at Brisbane Airport**.
+
+### Vehicle Category Revenue
+
+ICAV generated **$2,157** across 8 completed bookings and 30 rental days.
+
+### Revenue Yield
+
+Revenue per rental day varies across branches, ranging from **$48.00 to $89.18** in the analysed dataset.
+
+### Rental Duration
+
+The analysis shows different realised revenue-per-rental-day levels across rental-duration groups, providing a starting point for investigating rental-duration pricing.
+
+---
+
+# Commercial Pricing Applications
+
+The analysis can be extended into practical revenue-management decisions such as:
+
+### Dynamic Pricing
+
+Adjust daily rates based on:
+
+- Demand
+- Branch
+- Vehicle category
+- Rental duration
+- Time period
+- Day type
+
+### Fleet Allocation
+
+Use:
+
+- Rental activity
+- Revenue per vehicle
+- Revenue per rental day
+- Category demand
+
+to support fleet allocation analysis.
+
+### Rental Duration Pricing
+
+Evaluate:
+
+- Longer-rental discounts
+- Short-rental pricing
+- Minimum rental periods
+- Rental-length pricing structures
+
+### Branch Pricing
+
+Compare realised revenue per rental day across branches to understand differences in revenue yield.
 
 ---
 
 # Technology Stack
 
-* **SQL** — business analysis and KPI calculations
-* **SQLite** — relational database
-* **CSV** — source data
-* **Python / PNG charts** — visual analysis
-* **Git** — version control
-* **GitHub** — portfolio presentation
-* **Markdown** — documentation
+- **SQLite** — relational database
+- **SQL** — data analysis and business metrics
+- **CSV** — source datasets
+- **Git** — version control
+- **GitHub** — portfolio presentation
+- **Markdown** — documentation
+- **Matplotlib / PNG** — visual analysis
 
 ---
 
-# Repository Structure
+# Project Structure
 
 ```text
 car-rental-pricing-revenue-analytics/
@@ -293,8 +431,8 @@ car-rental-pricing-revenue-analytics/
 ├── charts/
 │   ├── branch_revenue.png
 │   ├── category_revenue.png
-│   ├── rental_duration_revenue.png
-│   └── revenue_per_rental_day.png
+│   ├── revenue_per_rental_day.png
+│   └── rental_duration_revenue.png
 │
 ├── data/
 │   ├── bookings.csv
@@ -323,102 +461,4 @@ car-rental-pricing-revenue-analytics/
 │   └── 15_rental_duration_revenue.sql
 │
 └── README.md
-```
-
----
-
-# Project Workflow
-
-```text
-CSV Source Data
-      ↓
-Data Validation
-      ↓
-SQLite Relational Database
-      ↓
-SQL Analysis
-      ↓
-Pricing & Revenue KPIs
-      ↓
-Commercial Insights
-      ↓
-Visualisation
-      ↓
-GitHub Portfolio
-```
-
----
-
-# Interview Relevance
-
-This project was designed to demonstrate practical skills relevant to **Pricing Analyst, Revenue Analyst and Commercial Analyst** roles in the car-rental industry.
-
-It demonstrates experience with:
-
-* SQL data analysis
-* Revenue calculations
-* Pricing metrics
-* Average Daily Rate analysis
-* Revenue yield
-* Rental-duration analysis
-* Fleet performance
-* Branch-level analysis
-* Vehicle-category analysis
-* Data validation
-* KPI development
-* Data visualisation
-* Commercial problem solving
-* Git/GitHub documentation
-
-The project is structured around **business questions rather than SQL syntax alone**, demonstrating how transactional data can be transformed into commercially relevant analysis.
-
----
-
-# Future Enhancements
-
-Potential extensions to the project include:
-
-* Dynamic pricing recommendations
-* Demand forecasting
-* Price elasticity analysis
-* Competitor-rate comparison
-* Booking lead-time analysis
-* Cancellation-rate analysis
-* Revenue forecasting
-* Power BI pricing dashboard
-* Automated KPI reporting
-* Python-based statistical analysis
-
----
-
-## Disclaimer
-
-This project uses **synthetic data** created for portfolio and demonstration purposes.
-
-The results are illustrative and should not be interpreted as actual company performance, market pricing, or customer behaviour.
-
----
-
-## Author
-
-**Kumail Hassan**
-
-Master of Business Analytics
-
-**SQL | Python | Power BI | Tableau | Excel | Revenue & Pricing Analytics**
-
-[GitHub Portfolio](https://github.com/Kumail-3)
-
-```
-
-After pasting:
-
-1. Press **Ctrl + O**
-2. Press **Enter**
-3. Press **Ctrl + X**
-
-Then **stop there** and tell me `done`.
-
-Next, I'll give you just the next command to check that the README and visualisations are correctly connected before we commit anything.
-```
 
