@@ -2,12 +2,10 @@ branch_id,branch_name,city,state,location_type
 1,Gold Coast Airport,Gold Coast,QLD,Airport
 2,Southport,Gold Coast,QLD,City
 3,Brisbane Airport,Brisbane,QLD,Airport
-4,Sydney Airport,Sydney,NSW,Airport
-5,Sydney CBD,Sydney,NSW,City
-6,Melbourne Airport,Melbourne,VIC,Airport
-7,Melbourne CBD,Melbourne,VIC,City
-8,Hobart Airport,Hobart,TAS,Airport
-9,Hobart City,Hobart,TAS,City
-10,Launceston Airport,Launceston,TAS,Airport
-11,Adelaide Airport,Adelaide,SA,Airport
-12,Perth Airport,Perth,WA,Airport
+4,Brisbane City,Brisbane,QLD,City
+5,Sunshine Coast Airport,Sunshine Coast,QLD,Airport
+6,Hobart Airport,Hobart,TAS,Airport
+7,Hobart City,Hobart,TAS,City
+8,Launceston Airport,Launceston,TAS,Airport
+9,Launceston City,Launceston,TAS,City
+10,Devonport,Devonport,TAS,City
