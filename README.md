@@ -370,6 +370,151 @@ The analysis shows different realised revenue-per-rental-day levels across renta
 
 ---
 
+# Demand Analysis
+
+The project also analyses booking demand patterns to understand how customer booking behaviour varies by date, vehicle category, branch, day type, and booking lead time.
+
+### Demand by Date
+
+Daily demand is measured using:
+
+* **Bookings** = `COUNT(booking_id)`
+* **Rental Days** = `SUM(rental_days)`
+* **Average Rental Days** = `Rental Days / Bookings`
+
+The analysis uses the **pickup date** as the demand date because it represents the start of the rental and therefore reflects operating-day demand.
+
+### Demand by Vehicle Category
+
+Vehicle-category demand is measured using:
+
+* Completed bookings
+* Total rental days
+* Booking demand share
+* Average rental days
+
+**Booking Demand Share:**
+
+`Category Bookings / Total Completed Bookings × 100`
+
+The three highest-volume categories — **EDAV, CDAV and ICAV — account for 72.5% of completed bookings** in the current dataset.
+
+### Demand by Branch
+
+Branch demand is compared using:
+
+* Completed bookings
+* Rental days
+* Booking demand share
+* Average rental days
+
+Airport locations account for **60% of completed bookings**, compared with **40% for city locations**.
+
+### Weekday vs Weekend Demand
+
+Bookings are classified using the pickup date:
+
+* **Weekday** = Monday–Friday
+* **Weekend** = Saturday–Sunday
+
+The current dataset contains:
+
+* **67.5% weekday bookings**
+* **32.5% weekend bookings**
+
+Average rental duration is **3.52 days for weekday bookings** compared with **3.15 days for weekend bookings**.
+
+### Monthly Demand
+
+Monthly demand is calculated by grouping completed bookings by pickup month.
+
+The current dataset contains one month of completed bookings, so the analysis is structured for future months but does **not attempt to identify seasonality** from the current sample.
+
+### Demand vs Pricing
+
+Demand and realised pricing are compared at vehicle-category level using:
+
+* Booking volume
+* Booking demand share
+* Average daily rate
+* Total revenue
+* Revenue per rental day
+
+The current dataset shows that higher observed daily rates occur in lower-volume categories, while EDAV, CDAV and ICAV represent the majority of bookings.
+
+This is an **observed relationship rather than evidence of price elasticity or causation**. A larger dataset across multiple periods would be required to evaluate pricing response more reliably.
+
+### Branch-Category Demand
+
+Demand is also analysed across the combination of:
+
+**Branch × Vehicle Category**
+
+This helps identify where specific vehicle categories generate booking activity and provides a basis for future fleet allocation and pricing decisions.
+
+Because many branch-category combinations currently contain only one booking, individual combinations should be interpreted cautiously.
+
+### Branch Demand Concentration
+
+Branch demand concentration is calculated using:
+
+`Branch Bookings / Total Completed Bookings × 100`
+
+This helps identify branches contributing the largest share of booking demand and can support prioritisation of pricing and fleet-management analysis.
+
+---
+
+## Booking Lead-Time Analysis
+
+Booking lead time measures the number of days between when a booking is created and when the rental begins.
+
+**Booking Lead Time:**
+
+`Pickup Date − Booking Date`
+
+Lead time is useful for understanding advance-booking behaviour and can support future revenue-management decisions.
+
+### Lead-Time Buckets
+
+| Lead Time | Bookings | Booking Share | Average Daily Rate | Revenue |
+|---|---:|---:|---:|---:|
+| 0–3 days | 4 | 10% | $48.00 | $476 |
+| 4–7 days | 10 | 25% | $50.90 | $1,527 |
+| 8–14 days | 16 | 40% | $68.00 | $3,778 |
+| 15+ days | 10 | 25% | $100.10 | $4,232 |
+
+
+### Lead-Time Finding
+
+**65% of completed bookings were made at least 8 days before pickup**, representing approximately **80% of total revenue ($8,010 of $10,013)**.
+
+The dataset also shows an increasing observed average daily rate across longer lead-time buckets:
+
+* 0–3 days: **$48.00**
+* 4–7 days: **$50.90**
+* 8–14 days: **$68.00**
+* 15+ days: **$100.10**
+
+This pattern can be used as a starting point for investigating advance-purchase behaviour and potential pricing strategies.
+
+However, the analysis **does not establish that longer lead times cause higher prices**. Vehicle mix, branch, rental duration and other factors may also influence the observed rates.
+
+### SQL Demand Analyses
+
+The demand and booking-behaviour analysis is implemented through:
+
+* `16_demand_by_date.sql`
+* `17_demand_by_category.sql`
+* `18_demand_by_branch.sql`
+* `19_weekday_weekend_demand.sql`
+* `20_monthly_demand.sql`
+* `21_demand_vs_pricing.sql`
+* `22_branch_category_demand.sql`
+* `23_branch_demand_concentration.sql`
+* `24_booking_lead_time.sql`
+* `25_booking_lead_time_summary.sql`
+
+The demand analysis is presented primarily through **SQL tables and calculation methodology rather than additional charts**, allowing the repository to focus visualisations on the core revenue and pricing analysis.
 # Commercial Pricing Applications
 
 The analysis can be extended into practical revenue-management decisions such as:
