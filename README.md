@@ -1,34 +1,51 @@
 # Car Rental Pricing & Revenue Analytics
 
-A synthetic pricing, revenue and fleet analytics project designed to demonstrate SQL, commercial analysis and pricing decision-making in the car rental industry.
+**SQL | Revenue Management | Demand Analysis | Pricing Analytics | Commercial Insights**
 
-The project uses a SQLite database containing booking, branch, fleet and pricing data. SQL is used to transform the raw data into commercially relevant metrics covering revenue, pricing, rental duration, fleet activity, vehicle performance and branch-level yield.
+A portfolio project designed to demonstrate how booking, pricing, fleet and branch data can be transformed into **commercial insights for car rental pricing and revenue management**.
 
----
+The project uses a synthetic SQLite database to analyse:
 
-## Project Objective
+* Revenue performance
+* Booking demand
+* Vehicle category performance
+* Branch pricing and revenue yield
+* Rental duration
+* Fleet activity
+* Booking lead time
+* Demand versus realised pricing
 
-The objective of this project is to answer practical commercial questions that a Pricing Analyst or Revenue Analyst may encounter in a car rental business:
+The analysis is designed around practical questions relevant to an **Assistant Pricing Analyst / Revenue Analyst**, including:
 
-- Which branches generate the most revenue?
-- Which vehicle categories contribute the most revenue?
-- What is the realised revenue per rental day?
-- How does pricing vary between branches and vehicle categories?
-- How does rental duration affect realised revenue?
-- How does rental activity differ across vehicle categories?
-- Which branches generate stronger revenue relative to their fleet size?
-- Which individual vehicles generate the most revenue?
-- How does pricing change over time?
-- What percentage of total revenue comes from each vehicle category?
-- Are the underlying booking and pricing data reliable?
+* Where is revenue being generated?
+* Which vehicle categories drive the most demand and revenue?
+* Which branches achieve stronger revenue yield?
+* How does rental duration affect realised revenue?
+* When are customers booking relative to pickup?
+* How is demand distributed across branches and vehicle categories?
+* What observed relationships exist between booking demand and pricing?
+* Which metrics could support future pricing and fleet-allocation decisions?
 
-The project follows the workflow:
+### Analytical Approach
 
-**Raw Data → SQLite Database → SQL Analysis → Commercial Metrics → Visualisation → Business Insights**
+**Raw Data → Data Validation → SQLite Database → SQL Analysis → Demand & Pricing Metrics → Visualisation → Commercial Insights**
+
+The project deliberately separates **observed relationships from causal conclusions**. For example, demand and pricing patterns are identified from the available dataset, but price elasticity is not claimed without sufficient historical data.
+
+### Tools
+
+* **SQL / SQLite** — data preparation, validation and analysis
+* **Python** — data processing and visualisation
+* **Git / GitHub** — version control and portfolio presentation
+* **Excel-style commercial thinking** — KPI interpretation and pricing recommendations
 
 ---
 
 # Project Overview
+
+**Raw Data → SQLite Database → SQL Analysis → Commercial Metrics → Visualisation → Business Insights**
+
+---
 
 The dataset contains:
 
@@ -516,6 +533,150 @@ The demand and booking-behaviour analysis is implemented through:
 
 The demand analysis is presented primarily through **SQL tables and calculation methodology rather than additional charts**, allowing the repository to focus visualisations on the core revenue and pricing analysis.
 # Commercial Pricing Applications
+
+# Forecasting Methodology
+
+Forecasting can be used to estimate future booking demand, rental activity and revenue based on historical patterns.
+
+The current dataset contains one month of completed bookings, so it is not sufficient to build a reliable production forecasting model. However, the project is structured so that additional historical data can be incorporated into the forecasting process.
+
+## 1. Moving Average
+
+A moving average forecasts the next period by calculating the average of recent observations.
+
+### Formula
+
+`Moving Average Forecast = (Demandₜ + Demandₜ₋₁ + ... + Demandₜ₋ₙ₊₁) ÷ n`
+
+Where:
+
+* `Demandₜ` = most recent observed demand
+* `n` = number of periods included in the average
+
+For example, using a 3-period moving average:
+
+`Forecast = (Demand₁ + Demand₂ + Demand₃) ÷ 3`
+
+A moving average is useful as a simple baseline when demand is relatively stable.
+
+## 2. Weighted Moving Average
+
+A weighted moving average gives greater importance to more recent observations.
+
+### Formula
+
+`Forecast = (w₁ × Demandₜ) + (w₂ × Demandₜ₋₁) + ... + (wₙ × Demandₜ₋ₙ₊₁)`
+
+Where:
+
+* `w` = weight assigned to each observation
+* The weights should sum to `1`
+
+For example:
+
+`Forecast = (0.5 × Most Recent Demand) + (0.3 × Previous Demand) + (0.2 × Earlier Demand)`
+
+This approach can respond more quickly to recent changes in booking demand.
+
+## 3. Exponential Smoothing
+
+Exponential smoothing gives greater weight to recent observations while still incorporating previous forecasts.
+
+### Formula
+
+`Fₜ₊₁ = αAₜ + (1 − α)Fₜ`
+
+Where:
+
+* `Fₜ₊₁` = forecast for the next period
+* `Aₜ` = actual demand in the current period
+* `Fₜ` = previous forecast
+* `α` = smoothing parameter between `0` and `1`
+
+A higher `α` makes the forecast respond more strongly to recent changes, while a lower `α` produces a smoother forecast.
+
+## 4. Regression-Based Forecasting
+
+Regression can be used to estimate how demand changes in relation to one or more business variables.
+
+### Simple Linear Regression
+
+`Ŷ = β₀ + β₁X`
+
+Where:
+
+* `Ŷ` = predicted demand
+* `β₀` = intercept
+* `β₁` = estimated relationship between the predictor and demand
+* `X` = predictor variable
+
+For example:
+
+`Predicted Bookings = β₀ + β₁ × Price`
+
+### Multiple Regression
+
+A more realistic revenue-management model could include several variables:
+
+`Demand = β₀ + β₁Price + β₂Branch + β₃Vehicle Category + β₄Lead Time + β₅Day Type + β₆Seasonality + β₇Availability`
+
+This approach allows multiple factors to be considered simultaneously rather than attributing changes in demand to price alone.
+
+Regression results would identify statistical relationships and predictive patterns. They would not automatically prove that a price change caused a change in demand.
+
+## 5. Revenue Forecasting
+
+Once future booking demand has been forecast, expected revenue can be estimated.
+
+### Formula
+
+`Forecast Revenue = Forecast Bookings × Forecast Average Rental Days × Forecast Daily Rate`
+
+Alternatively, where rental-day demand is forecast directly:
+
+`Forecast Revenue = Forecast Rental Days × Forecast Revenue per Rental Day`
+
+This connects demand forecasting with revenue-management decisions.
+
+## 6. Forecast Accuracy
+
+Forecasts should be compared with actual results to determine how well the model performs.
+
+### Mean Absolute Error (MAE)
+
+`MAE = Σ|Actual − Forecast| ÷ n`
+
+MAE measures the average absolute difference between the forecast and actual result.
+
+### Mean Absolute Percentage Error (MAPE)
+
+`MAPE = (100 ÷ n) × Σ(|Actual − Forecast| ÷ |Actual|)`
+
+MAPE expresses forecast error as a percentage.
+
+Lower MAE and MAPE values indicate better forecast accuracy.
+
+## Forecasting Application
+
+With sufficient historical data, these methods could be used to forecast demand by:
+
+* Branch
+* Vehicle category
+* Pickup date
+* Rental duration
+* Booking lead time
+
+The forecasts could then support decisions such as:
+
+* Increasing prices during periods of strong forecast demand
+* Reducing prices when forecast demand is weak
+* Protecting fleet capacity for high-demand periods
+* Adjusting vehicle-category pricing
+* Moving fleet between branches
+* Planning promotional strategies
+
+The current project does not claim to have produced a reliable forecast because the dataset contains only one month of observations. With a larger historical dataset, different forecasting methods could be tested and compared using out-of-sample forecast accuracy.
+
 
 The analysis can be extended into practical revenue-management decisions such as:
 
