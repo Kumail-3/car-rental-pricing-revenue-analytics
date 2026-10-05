@@ -321,7 +321,7 @@ The completed data-quality checks found no mismatched revenue calculations, orph
 
 # SQL Analysis Library
 
-The project contains 15 SQL analyses covering different commercial questions.
+The project contains 25 SQL analyses covering data quality, revenue, pricing, fleet performance, demand and booking behaviour.
 
 | SQL Analysis | Business Focus |
 |---|---|
@@ -532,9 +532,8 @@ The demand and booking-behaviour analysis is implemented through:
 * `25_booking_lead_time_summary.sql`
 
 The demand analysis is presented primarily through **SQL tables and calculation methodology rather than additional charts**, allowing the repository to focus visualisations on the core revenue and pricing analysis.
-# Commercial Pricing Applications
 
-# Forecasting Methodology
+## Forecasting Methodology
 
 Forecasting can be used to estimate future booking demand, rental activity and revenue based on historical patterns.
 
@@ -677,6 +676,7 @@ The forecasts could then support decisions such as:
 
 The current project does not claim to have produced a reliable forecast because the dataset contains only one month of observations. With a larger historical dataset, different forecasting methods could be tested and compared using out-of-sample forecast accuracy.
 
+# Commercial Pricing Applications
 
 The analysis can be extended into practical revenue-management decisions such as:
 
